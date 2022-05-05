@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Profile |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-3 border-right">
+      <ul class="list-unstyled p-3">
+        <li class="btn btn-block"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
+        <li class="btn btn-block"><a href="{% url 'address' %}" class="btn">Address</a></li>
+        <li class="btn btn-block"><a href="{% url 'changepass' %}" class="btn">Change Password</a></li>
+
+      </ul>
+    </div>
+    <div class="col-8 ">
+      <div class="row">
+        <div class="col">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+      <form method="POST">
+        {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group">
+          <label>{{fm.label_tag}}</label>
+          {{fm}} {{fm.error|striptags}}
+        </div>
+        {% endfor %}
+
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

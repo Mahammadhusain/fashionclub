@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Signup |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row ">
+    <div class="col-5 p-5 mx-auto border rounded" style="margin-top: 5rem;">
+      <div class="text-center display-4">Signup</div>
+      <!-- Message Display -->
+      <div class="row">
+        <div class="col">
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <!-- Error Display -->
+      <!-- <div class="row">
+        <div class="col">
+          {% if form.errors %}
+          {% for field in form %}
+          {% for error in field.errors %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{error}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div> -->
+      <form method="POST" novalidate>
+        {% csrf_token %}
+
+        {% for fm in form %}
+        <div class="form-group">
+          <label>{{fm.label_tag}}</label>
+          {{fm}}
+          {% if fm.errors %}
+          <small class="form-text text-danger"><li class="list-unstyled">{{fm.errors}}</li></small>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+
+        <button type="submit" class="btn btn-block btn-primary">Sign up</button>
+
+        <div class="form-group form-check " style="margin-top: 3rem;">
+          <small class="text-primary h5" href="#">Existing User ? / <a class="text-success h5" href="{% url 'signin' %}">Login Now</a>
+          </small>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

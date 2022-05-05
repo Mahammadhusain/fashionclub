@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Change Pass |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-3 border-right">
+            <ul class="list-unstyled p-3">
+                <li class="btn btn-block"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
+                <li class="btn btn-block"><a href="{% url 'address' %}" class="btn">Address</a></li>
+                <li class="btn btn-block"><a href="{% url 'changepass' %}" class="btn">Change Password</a></li>
+            </ul>
+        </div>
+        <div class="col-8 ">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                  <label class="mt-2">{{fm.label_tag}}</label>
+                  {{fm}} <h6 class="text-danger">{{fm.errors|striptags}}</h6>
+                {% endfor %}
+                  
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+
+              </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}

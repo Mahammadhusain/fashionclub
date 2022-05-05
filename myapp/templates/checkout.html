@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Checkout |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row mt-3 ">
+    <div class="display-4 mx-auto">Checkout</div>
+  </div>
+  <div class="row mt-3 p-3 ">
+    <div class="col-7 border p-3 ">
+      <div class="h3 p-2">Order Summary </div>
+      <table class="table table-hover">
+        <tbody>
+
+          {% for i in product_data %}
+          <tr>
+            <!-- <th scope="row">1</th> -->
+            <td><img style="height: 4rem;" src="{{i.product.image.url}}"></td>
+            <td>{{i.product.name}}</td>
+            <td>₹ {{i.product.price}}</td>
+            <td>{{i.quantity}}</td>
+            <td class="text-right"><strong>₹ {{i.product_total}}</strong></strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="col-1"></div>
+    <div class="col-4 p-3 border p-3">
+      <div class="h3 p-2">Select Shipping Address</div>
+      <!-- Message Display -->
+      <div class="row">
+        <div class="col">
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong><small>{{message}}</small></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      {% for ad in cutomer_data %}
+      <hr>
+      <form action="/orders/" method="POST">
+        {% csrf_token %}
+        <div>
+          <strong>{{ad.name|upper}}</strong><br>
+          {{ad.locality}},{{ad.city}},{{ad.zipcode}},{{ad.state}}<br>
+          {{ad.email}}<br>
+          {{ad.mobile}}
+        </div>
+        <div>
+          <input required type="radio" name="address_id" value="{{ad.id}}">
+          <strong>Address: {{forloop.counter}}</strong>
+        </div>
+        
+        <script src="https://checkout.razorpay.com/v1/checkout.js"
+          data-key="rzp_test_Vmt3z0OcBPopoR"
+          data-amount="{{amount}}"
+          data-currency="INR"
+          data-order_id="{{payment.id}}"
+          data-buttontext="Pay with Razorpay"
+          data-name="FashionClub"
+          data-description="Clothing"
+          data-image="https://example.com/your_logo.jpg"
+          data-prefill.name="PC"
+          data-prefill.email="fashionclub@mail.com"
+          data-theme.color="#F37254">
+        </script>
+        {% endfor %}
+        <hr>
+        <div class="col mt-3">
+          <button class="btn btn-block btn-info" type="submit">Place order</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+
+    <div class="row" style="margin-left: 28rem;">
+      <div class="col ">
+        <table>
+          <tbody>
+            <tr>
+              <td><strong class="">Total Amount:</strong>
+              <td class="text-right">{{productamount}}</td>
+              </td>
+            </tr>
+            <tr>
+              <td><strong class="">Shipping Amount:</strong>
+              <td class="text-right">{{shipping_amt}}</td>
+              </td>
+            </tr>
+            <tr>
+              <td><strong class="">Payable Amount:</strong>
+              <td class="text-right"><strong>{{final_amt}}</strong></td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+      </div>
+    </div>
+
+
+
+</div>
+{% endblock body %}

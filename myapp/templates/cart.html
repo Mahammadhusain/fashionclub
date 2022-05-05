@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Cart |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row mt-3 ">
+    <div class="display-4 mx-auto">Shoping Cart</div>
+  </div>
+  <div class="row mt-3 p-2 ">
+    <div class="col-7 border p-3 ">
+      <div class="h3 p-2">Cart</div>
+      <!-- Message Display -->
+      <div class="row">
+        <div class="col">
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <!-- Error Display -->
+      <div class="card" ">
+        
+        {% for i in product_data %}
+        <div class=" row">
+        <hr>
+        <div class="col-3">
+          <img src="{{i.product.image.url}}" class="card-img-top mt-5 ml-3 " alt="...">
+
+        </div>
+        <hr>
+        <div class="col-8">
+          <div class="card-body">
+            <h6 class="card-title">{{i.product.name}}</h6>
+            <span class="h6"> Price : ₹ {{i.product.price}}</span>
+            <div style="margin-left: 5rem;" class="h6 ">
+
+            </div>
+            <p class="card-text">Description: {{i.product.description}}</p>
+            <a href="{% url 'removeItem' i.id %}" data-toggle="tooltip" data-placement="top" title="Remove item"
+              class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+            <span style="margin-left: 9rem;">
+              Quantity:
+              {% csrf_token %}
+              <a href="{% url 'plusequntity' i.product.id %}" class="btn btn-sm btn-outline-secondary ml-2"
+                type="submit">
+                <i class="fas fa-arrow-up"></i>
+              </a>
+              <span class=" ml-2"><strong>{{i.quantity}}</strong></span>
+              <a href="{% url 'minusquantity' i.product.id %}" class="btn btn-sm btn-outline-secondary ml-2"
+                type="submit">
+                <i class="fas fa-arrow-down"></i>
+              </a>
+            </span>
+
+            <p style="margin-left: 12.6rem; margin-top: 1rem;"><span class="h6"><u>Total Amount: ₹
+                  {{i.product_total}}</u></span> </p>
+            <hr>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="alert alert-danger" role="alert">
+        You Don't Have Any Product in Your Cart
+      </div>
+      <div>
+        <img src="{% static 'images/cartempty/empty cart.gif' %}" class="card-img-top" alt="...">
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+  <div class="col-1"></div>
+  {% if amount == 0 and final_amt == 0 %}
+  <div class="col-4 p-2 border">
+    <div class="h3 p-2">Shop Now With Us </div>
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <td class="text-right">
+            <a class="btn btn-block btn-warning" href="{% url 'shop' %}">Shop Now</a>
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+
+  </div>
+
+  {% else %}
+  <div class="col-4 p-2 border">
+    <div class="h3 p-2">The Total Amount of </div>
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <td>Amount</td>
+          <td class="text-right">₹ {{amount}}</td>
+        </tr>
+        <tr>
+          <td>Shipping</td>
+          <td class="text-right">₹ {{shipping_amt}}</td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong>(Including VAT)</td>
+          <td class="text-right"><strong>₹ {{final_amt}}</strong></td>
+        </tr>
+
+      </tbody>
+    </table>
+    <a class="btn btn-block btn-primary" href="{% url 'checkout' %}">Checkout</a>
+  </div>
+  {% endif %}
+
+</div>
+</div>
+{% endblock body %}

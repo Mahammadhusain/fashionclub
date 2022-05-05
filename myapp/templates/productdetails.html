@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Product-Details |
+{% endblock title %}
+
+
+{% block body %}
+    <div class="container">
+      
+        <div class="row mt-3 p-3 ">
+          {% for product in product %}
+            <div class="col-5 border p-3 ">
+              <div class="h3 p-2">Cart</div>
+                <img class="rounded mx-auto d-block" style="height: 20rem"  src="{{product.image.url}}" alt="">
+              
+            </div>
+            <div class="col-1"></div>
+            <div class="col-6 p-3 border p-3 " >
+              <div class="h3 p-2">Product Title:{{product.name}} </div>
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <th>Category</th>
+                    <td class="text-right">{{product.category}}</td>
+                  </tr>
+                  <tr>
+                    <th>Price</th>
+                    <td class="text-right">₹ {{product.price}}</td>
+                  </tr>
+                  <tr>
+                    <th>Description</th>
+                    <td class="text-right">{{product.description}}</td>
+                  </tr>
+                  
+                  
+                </tbody>
+            </table>
+            <div class="row">
+              <div class="col">
+                
+                {% if already_in_cart %}
+                <a href="{% url 'showcart' %}" class="btn btn-block btn-warning" >Go To Cart</a>
+                {% else %}
+                <form action="/cart/{{product.id}}/" method="POST" novalidate>
+                  {% csrf_token %}
+                  <input type="hidden" name="pro_id" value="{{product.id}}">
+                  <button class="btn btn-block btn-warning" >Add To Cart</button>
+                </form>
+                {% endif %}
+              </div>
+              <div class="col">
+              <a class="btn btn-block btn-primary" href="{% url 'shop' %}">Home</a>
+
+              </div>
+            </div>
+            </div>
+            
+            {% endfor %}
+
+
+
+        </div>
+    </div>
+{% endblock body %}
+    

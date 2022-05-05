@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Address |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+
+        <div class="col-3 border-right">
+            <ul class="list-unstyled p-3">
+                <li class="btn btn-block"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
+                <li class="btn btn-block"><a href="{% url 'address' %}" class="btn">Address</a></li>
+                <li class="btn btn-block"><a href="{% url 'changepass' %}" class="btn">Change Password</a></li>
+            </ul>
+        </div>
+        <div class="col-8 ">
+            <!-- Message Display -->
+            <div class="row">
+                <div class="col">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                        <strong>{{message}}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <form class="border p-3 form-sm" method="POST" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                <div class="form-group">
+                    <label>{{fm.label_tag}}</label>
+                    {{fm}} {{fm.error|striptags}}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Add Address</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class=" h5 bg-secondary p-2 text-light">All Addresses</div>
+    <hr>
+    <div class="row ">
+    
+        {% for i in address %}
+        <div class="col-3 border mt-3">
+            <table>
+                <tbody class="table table-borderless text-sm">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{i.name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Locality:</th>
+                        <td>{{i.locality}}</td>
+                    </tr>
+                    <tr>
+                        <th>City:</th>
+                        <td>{{i.city}}</td>
+                    </tr>
+                    <tr>
+                        <th>Zip:</th>
+                        <td>{{i.zipcode}}</td>
+                    </tr>
+                    <tr>
+                        <th>State:</th>
+                        <td>{{i.state}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {% empty %}
+        <div class="alert alert-danger mt-3 mx-auto" role="alert">
+            <strong>☹️ ------------- You Don't Have Any Address ------------- ☹️</strong>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

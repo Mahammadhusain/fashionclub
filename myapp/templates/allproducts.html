@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Shop |
+{% endblock title %}
+
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-2 mt-5 p-3 border">
+            <div class="list-group">
+                <a href="{% url 'allproducts'  %}" class="list-group-item list-group-item-action active">
+                  All Products
+                </a>
+                
+                {% for category in categories %}
+                    <a href="/allproducts/?{{category.id}}" name="cate"  class="list-group-item list-group-item-action">{{category.name}}</a>
+                {% endfor %}
+              </div>
+        </div>
+        <!-- <div class="col-1"></div> -->
+        <div class="col-9 mt-5 p-3 ml-3 border">
+            <div class="row">
+                {% for product in products %}
+                <div class="col">
+                    <div class="card" style="width: 12rem;">
+                        <a href="{% url 'productdetails' product.id %}"><img style="height: 10rem;" src="{{product.image.url}}" class="card-img-top" alt="..."></a>
+                        <div class="card-body">
+                          <h5 class="card-title">{{product.name}}</h5>
+                          <p class="card-text">{{product.description}}</p>
+                          <!-- Add Cart -->
+                          <form action="/cart/{{product.id}}/" method="POST" novalidate>
+                            {% csrf_token %}
+                            <input type="hidden" name="pro_id" value="{{product.id}}">
+                            <button class="btn btn-block btn-warning" >Add To Cart</button>
+                          </form>
+                          
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col">
+                    <div class="alert text-center alert-danger" role="alert">
+                        <strong>--------- No Any Item Available ---------</strong>
+                      </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock body %}

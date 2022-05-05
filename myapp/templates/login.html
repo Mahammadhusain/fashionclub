@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Login |
+{% endblock title %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row ">
+            <div class="col-5 p-5 mx-auto border rounded" style="margin-top: 5rem;">
+                <div class="text-center display-4">Signin</div>
+                <!-- Message Display -->
+                <div class="row">
+                    <div class="col">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                            <strong>{{message}}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Error Display -->
+                <div class="row">
+                    <div class="col">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{error}}
+                            <button type="button" class="btn-close" data-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <form class="" method="POST" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Username</label>
+                      <input class="form-control" type="text" name="uname" >
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Password</label>
+                      <input class="form-control" type="text" name="upass" >
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block btn-primary">Sign in</button>
+                    <div class="form-group form-check " style="margin-top: 3rem;">
+                        <small class="text-primary h5" href="#">If New User ? / <a class="text-success h5" href="{% url 'signup' %}">Create Account Now</a> </small>
+                    </div>
+
+                    <div class="form-group form-check ">
+                        <small class="text-primary h5" href="#">If Forget Password ? / <a class="text-success h5" href="{% url 'password_reset' %}">Reset</a> </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+    
